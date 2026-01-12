@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:purchases_flutter/purchases_flutter.dart';
 
+import 'package:flutter/foundation.dart';
+
 import '../../core/config/monetization_env.dart';
 import '../../core/interfaces/monetization_provider.dart';
 import '../../core/models/subscription_plan.dart';
@@ -16,6 +18,7 @@ class RevenueCatProvider implements MonetizationProvider {
       // No inicializar RevenueCat en web
       return;
     }
+    debugPrint('[RevenueCatProvider] Inicializando RevenueCat');
     await Purchases.setLogLevel(LogLevel.debug);
     // Usar la clave desde MonetizationEnv
     await Purchases.configure(
@@ -27,6 +30,7 @@ class RevenueCatProvider implements MonetizationProvider {
 
   @override
   Future<List<SubscriptionPlan>> getPlans() async {
+    debugPrint('[RevenueCatProvider] Obteniendo planes');
     final plans = <SubscriptionPlan>[];
     if (_offerings?.current != null) {
       for (final package in _offerings!.current!.availablePackages) {
@@ -45,6 +49,7 @@ class RevenueCatProvider implements MonetizationProvider {
 
   @override
   Future<void> purchase(String planId) async {
+    debugPrint('[RevenueCatProvider] Intentando comprar plan: $planId');
     final packages = _offerings?.current?.availablePackages;
     final package = packages?.firstWhereOrNull((p) => p.identifier == planId);
     if (package != null) {
@@ -55,6 +60,7 @@ class RevenueCatProvider implements MonetizationProvider {
 
   @override
   Future<void> restore() async {
+    debugPrint('[RevenueCatProvider] Restaurando compras');
     await Purchases.restorePurchases();
     await Purchases.getCustomerInfo();
   }

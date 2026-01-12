@@ -3,18 +3,22 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import '../../core/interfaces/ads_provider.dart';
 import '../../core/config/monetization_env.dart';
 
+import 'package:flutter/foundation.dart';
+
 class AdmobProvider implements AdsProvider {
   BannerAd? _bannerAd;
 
   @override
   Future<void> initialize() async {
     if (kIsWeb) return;
+    debugPrint('[AdmobProvider] Inicializando AdMob');
     await MobileAds.instance.initialize();
   }
 
   @override
   void showBanner() {
     if (kIsWeb) return;
+    debugPrint('[AdmobProvider] Mostrando banner');
     final adUnitId = MonetizationEnv.admobBannerId;
     _bannerAd = BannerAd(
       adUnitId: adUnitId,
@@ -28,6 +32,7 @@ class AdmobProvider implements AdsProvider {
   @override
   void hideBanner() {
     if (kIsWeb) return;
+    debugPrint('[AdmobProvider] Ocultando banner');
     _bannerAd?.dispose();
     _bannerAd = null;
   }

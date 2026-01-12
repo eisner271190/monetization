@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import '../core/interfaces/monetization_provider.dart';
 
+import 'package:flutter/foundation.dart';
+
 class PaywallWidget extends StatelessWidget {
   final MonetizationProvider provider;
 
@@ -11,7 +13,10 @@ class PaywallWidget extends StatelessWidget {
     return Column(
       children: [
         ElevatedButton(
-          onPressed: () => provider.purchase('monthly'),
+          onPressed: () {
+            debugPrint('[PaywallWidget] Botón de suscripción presionado');
+            provider.purchase('monthly');
+          },
           child: const Text('Suscribirse'),
         ),
       ],
