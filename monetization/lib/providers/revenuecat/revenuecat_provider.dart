@@ -1,8 +1,6 @@
+import 'dart:async';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:purchases_flutter/purchases_flutter.dart';
-
-// import eliminado: innecesario
-
 import '../../core/config/monetization_env.dart';
 import '../../core/interfaces/monetization_provider.dart';
 import '../../core/models/subscription_plan.dart';
@@ -10,7 +8,7 @@ import '../../core/models/user_entitlement.dart';
 
 class RevenueCatProvider implements MonetizationProvider {
   Offerings? _offerings;
-  final _entitlementController = Stream<UserEntitlement>.empty();
+  final _entitlementController = StreamController<UserEntitlement>.broadcast();
 
   @override
   Future<void> initialize() async {
@@ -26,6 +24,7 @@ class RevenueCatProvider implements MonetizationProvider {
     );
     _offerings = await Purchases.getOfferings();
     await Purchases.getCustomerInfo();
+    _emitEntitlement();
   }
 
   @override
@@ -56,6 +55,7 @@ class RevenueCatProvider implements MonetizationProvider {
       final params = PurchaseParams.package(package);
       await Purchases.purchase(params);
       await Purchases.getCustomerInfo();
+      _emitEntitlement();
     }
   }
 
@@ -64,11 +64,24 @@ class RevenueCatProvider implements MonetizationProvider {
     // Restaurando compras
     await Purchases.restorePurchases();
     await Purchases.getCustomerInfo();
+    _emitEntitlement();
   }
 
   @override
   Stream<UserEntitlement> entitlementStream() {
-    // Implementar stream real si es necesario
-    return _entitlementController;
+    return _entitlementController.stream;
+  }
+
+  void _emitEntitlement() async {
+    final info = await Purchases.getCustomerInfo();
+    final entitlements = info.entitlements.active.values;
+    if (entitlements.isNotEmpty) {
+      final planId = entitlements.first.identifier;
+      _entitlementController.add(
+        UserEntitlement(isActive: true, planId: planId),
+      );
+    } else {
+      _entitlementController.add(UserEntitlement(isActive: false));
+    }
   }
 }
