@@ -13,7 +13,7 @@ class PaywallWidget extends StatelessWidget {
         ElevatedButton(
           onPressed: () => provider.purchase('monthly'),
           child: const Text('Suscribirse'),
-        )
+        ),
       ],
     );
   }

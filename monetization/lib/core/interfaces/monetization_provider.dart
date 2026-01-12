@@ -1,5 +1,5 @@
-import 'package:monetization_component/core/models/subscription_plan.dart';
-import 'package:monetization_component/core/models/user_entitlement.dart';
+import '../models/subscription_plan.dart';
+import '../models/user_entitlement.dart';
 
 abstract class MonetizationProvider {
   Future<void> initialize();
