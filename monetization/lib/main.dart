@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'monetization_module.dart';
 import 'core/config/monetization_env.dart';
 import 'providers/revenuecat/revenuecat_provider.dart';
@@ -7,6 +8,7 @@ import 'ui/paywall_widget.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: 'assets/.env');
   MonetizationEnv.validateAndLog();
   final monetization = MonetizationModule(
     provider: RevenueCatProvider(),

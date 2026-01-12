@@ -1,10 +1,9 @@
 import 'dart:developer';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class MonetizationEnv {
-  static String get revenueCatKey =>
-      const String.fromEnvironment('REVENUECAT_PUBLIC_KEY');
-  static String get admobBannerId =>
-      const String.fromEnvironment('ADMOB_BANNER_ID');
+  static String get revenueCatKey => dotenv.env['REVENUECAT_PUBLIC_KEY'] ?? '';
+  static String get admobBannerId => dotenv.env['ADMOB_BANNER_ID'] ?? '';
 
   static void validateAndLog() {
     final revenueCat = revenueCatKey;

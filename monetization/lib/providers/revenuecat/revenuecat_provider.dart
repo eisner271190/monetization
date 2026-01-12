@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:purchases_flutter/purchases_flutter.dart';
 
 import '../../core/config/monetization_env.dart';
@@ -11,6 +12,10 @@ class RevenueCatProvider implements MonetizationProvider {
 
   @override
   Future<void> initialize() async {
+    if (kIsWeb) {
+      // No inicializar RevenueCat en web
+      return;
+    }
     await Purchases.setLogLevel(LogLevel.debug);
     // Usar la clave desde MonetizationEnv
     await Purchases.configure(
