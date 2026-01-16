@@ -1,3 +1,5 @@
+# Para caché local simple
+shared_preferences: ^2.2.2
 name: monetization
 description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
@@ -30,6 +32,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  shared_preferences: ^2.2.2
   flutter_dotenv: ^5.1.0
 
   # The following adds the Cupertino Icons font to your application.
